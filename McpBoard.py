@@ -3,7 +3,15 @@ from time import sleep
 
 
 class McpChessBoard:
+   """
+   Main Class for control of hardware chessboard
+   using the Microchip MCP23017 chip
+   and wiringpi2 plus some gpios on the raspi
+   """
   def __init__(self):
+    """
+    Setup ports and pin names
+    """
     self.wiringpi = wiringpi
     self.pinBase = 65
     self.i2cAddr = 0x20
@@ -84,16 +92,20 @@ class McpChessBoard:
     self.storedPositions = []
     print "MCP Board Initilized..."
   def ledAllOff(self):
+    """
+    Turn all LEDs off
+    """
     for pin in range(self.pinBase,self.pinBase + 7):
       self.wiringpi.digitalWrite(pin,self.HIGH)
     for pin in range(0,7):
       self.wiringpi.digitalWrite(pin,self.LOW)
 
   def led(self,pos,flash,quick):
-    #Get a board position and convert
-    #to a LED
-    #example input a2,True,True  = flash a2 quick
-    #All off
+    """
+    Get a board position and convert
+    to a LED
+    example input a2,True,True  = flash a2 quick
+    """
     self.ledAllOff()
     #Get row
     aRow = pos[1]
@@ -149,6 +161,9 @@ class McpChessBoard:
       self.wiringpi.digitalWrite(theLed,self.HIGH)
        
   def scanBoard(self):
+    """
+    Scan the matrix and return position
+    """
     activePos = []
     #Put all rows HIGH
     for row in self.rows:
